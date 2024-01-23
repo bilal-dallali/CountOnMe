@@ -72,6 +72,15 @@ class ViewController: UIViewController {
             self.present(alertVC, animated: true, completion: nil)
         }
     }
+    
+    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func tappedDivisionButton(_ sender: UIButton) {
+        
+    }
+    
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard expressionIsCorrect else {
