@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
+    let calculator = Calculator()
     
     var elements: [String] {
         return textView.text.split(separator: " ").map { "\($0)" }
@@ -37,6 +38,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
     }
     
     
@@ -46,11 +48,9 @@ class ViewController: UIViewController {
             return
         }
         
-        if expressionHaveResult {
-            textView.text = ""
-        }
+        calculator.appendElement(numberText)
         
-        textView.text.append(numberText)
+        textView.text = calculator.text
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
@@ -74,11 +74,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        
+        if canAddOperator {
+            textView.text.append(" * ")
+        } else {
+            let alertVC = UIAlertController(title: "Erreur", message: "Un opérateur est déjà mis !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertVC, animated: true, completion: nil)
+        }
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        
+        calculator.appendOperand(.divide)
+        textView.text = calculator.text
+        if canAddOperator {
+            textView.text.append(" / ")
+        } else {
+            let alertVC = UIAlertController(title: "Erreur", message: "Un opérateur est déjà mis !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertVC, animated: true, completion: nil)
+        }
     }
     
 
@@ -108,6 +122,8 @@ class ViewController: UIViewController {
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
+            case "*": result = left * right
+            case "/": result = left / right
             default: fatalError("Unknown operator !")
             }
             
