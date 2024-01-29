@@ -54,4 +54,8 @@ class Calculator {
             appendElement(operand.rawValue)
         }
     }
+    
+    func clear() {
+        elements = []
+    }
 }
