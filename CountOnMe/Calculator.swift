@@ -41,21 +41,12 @@ class Calculator {
     
     func appendElement(_ value: String) {
         if expressionHaveResult {
-            elements = []
-        }
-        if let lastValue = elements.last {
-            if let operand =
-            Operand(rawValue: lastValue),
-               Operand.allCases.contains(operand) {
-                
-            } else {
-                elements.removeLast()
-                elements.append(lastValue.appending(value))
-            }
+            elements = [value]
+        } else if let last = elements.last, Operand(rawValue: last) == nil {
+            elements[elements.count - 1] = "\(last)\(value)"
         } else {
             elements.append(value)
         }
-        
     }
     
     func appendOperand(_ operand: Operand) {

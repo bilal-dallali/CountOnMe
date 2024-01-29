@@ -48,6 +48,11 @@ class ViewController: UIViewController {
             return
         }
         
+        if canAddOperator {
+            textView.text.append("\(numberText)")
+        } else {
+            textView.text.append(numberText)
+        }
         calculator.appendElement(numberText)
         
         textView.text = calculator.text
@@ -95,7 +100,7 @@ class ViewController: UIViewController {
         }
     }
     
-
+    
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard expressionIsCorrect else {
             let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
@@ -131,8 +136,33 @@ class ViewController: UIViewController {
             operationsToReduce.insert("\(result)", at: 0)
         }
         
+        if !isExpressionValid(textView.text) {
+            // Affichez une alerte ou un message d'erreur à l'utilisateur
+            presentAlert(message: "L'expression n'est pas valide.")
+            return
+        }
+        
         textView.text.append(" = \(operationsToReduce.first!)")
     }
+    
+    func isExpressionValid(_ expression: String) -> Bool {
+        // Vérifiez que l'expression ne se termine pas par un opérateur
+        let operators = ["+", "-", "*", "/"]
+        if let lastCharacter = expression.last, operators.contains(String(lastCharacter)) {
+            return false
+        }
+        
+        // Ajoutez d'autres vérifications selon les besoins, par exemple pour les opérateurs consécutifs
+        
+        return true
+    }
+    
+    func presentAlert(message: String) {
+        let alertVC = UIAlertController(title: "Erreur", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        self.present(alertVC, animated: true, completion: nil)
+    }
 
+    
 }
 
