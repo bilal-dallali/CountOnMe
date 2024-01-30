@@ -9,6 +9,41 @@
 import Foundation
 
 class Calculator {
+    
+    func calculate(elements: [String]) -> String {
+            var operationsToReduce = elements
+
+            // Première passe pour les multiplications et divisions
+            while let index = operationsToReduce.firstIndex(where: { $0 == "*" || $0 == "/" }) {
+                guard index > 0, index < operationsToReduce.count - 1,
+                      let left = Double(operationsToReduce[index - 1]),
+                      let right = Double(operationsToReduce[index + 1]) else {
+                    return "Erreur : Expression invalide"
+                }
+
+                if operationsToReduce[index] == "/" && right == 0 {
+                    return "Erreur : Division par zéro"
+                }
+
+                let result = operationsToReduce[index] == "*" ? left * right : left / right
+                operationsToReduce.replaceSubrange(index-1...index+1, with: [String(result)])
+            }
+
+            // Deuxième passe pour les additions et soustractions
+            while let index = operationsToReduce.firstIndex(where: { $0 == "+" || $0 == "-" }) {
+                guard index > 0, index < operationsToReduce.count - 1,
+                      let left = Double(operationsToReduce[index - 1]),
+                      let right = Double(operationsToReduce[index + 1]) else {
+                    return "Erreur : Expression invalide"
+                }
+
+                let result = operationsToReduce[index] == "+" ? left + right : left - right
+                operationsToReduce.replaceSubrange(index-1...index+1, with: [String(result)])
+            }
+
+            return operationsToReduce.first ?? "Erreur : Résultat non disponible"
+        }
+    
     enum Operand: String, CaseIterable {
         case plus = "+"
         case minus = "-"
@@ -39,53 +74,26 @@ class Calculator {
     }
     
     
-    func appendElement(_ value: String) {
-        if expressionHaveResult {
-            elements = [value]
-        } else if let last = elements.last, Operand(rawValue: last) == nil {
-            elements[elements.count - 1] = "\(last)\(value)"
-        } else {
-            elements.append(value)
-        }
-    }
+//    func appendElement(_ value: String) {
+//        if expressionHaveResult {
+//            elements = [value]
+//        } else if let last = elements.last, Operand(rawValue: last) == nil {
+//            elements[elements.count - 1] = "\(last)\(value)"
+//        } else {
+//            elements.append(value)
+//        }
+//    }
     
-    func appendOperand(_ operand: Operand) {
-        if canAddOperator {
-            appendElement(operand.rawValue)
-        }
-    }
+//    func appendOperand(_ operand: Operand) {
+//        if canAddOperator {
+//            appendElement(operand.rawValue)
+//        }
+//    }
     
     func clear() {
         elements = []
     }
     
-    func calculate() -> Double? {
-        var operationsToReduce = elements
-        
-        // Première passe : Multiplications et divisions
-        while let index = operationsToReduce.firstIndex(where: { $0 == "*" || $0 == "/" }) {
-            guard index > 0, index < operationsToReduce.count - 1,
-                  let left = Double(operationsToReduce[index - 1]),
-                  let right = Double(operationsToReduce[index + 1]) else {
-                return nil // Gestion d'erreur
-            }
-            
-            let result: Double
-            if operationsToReduce[index] == "*" {
-                result = left * right
-            } else if right != 0 {
-                result = left / right
-            } else {
-                return nil // Gestion de la division par zéro
-            }
-            
-            operationsToReduce.replaceSubrange(index-1...index+1, with: [String(result)])
-        }
-        
-        // Deuxième passe : Additions et soustractions
-        // Répétez une logique similaire pour les additions et soustractions
-        
-        return Double(operationsToReduce.first ?? "")
-    }
+    
     
 }

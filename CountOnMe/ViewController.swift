@@ -55,16 +55,14 @@ class ViewController: UIViewController {
         }
         // Sinon, ajoutez le chiffre à l'expression existante
         textView.text.append(numberText)
-
+        
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if canAddOperator {
             textView.text.append(" + ")
         } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Un opérateur est déjà mis !")
         }
     }
     
@@ -72,9 +70,7 @@ class ViewController: UIViewController {
         if canAddOperator {
             textView.text.append(" - ")
         } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Un opérateur est déjà mis !")
         }
     }
     
@@ -82,9 +78,7 @@ class ViewController: UIViewController {
         if canAddOperator {
             textView.text.append(" * ")
         } else {
-            let alertVC = UIAlertController(title: "Erreur", message: "Un opérateur est déjà mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Un opérateur est déjà mis !")
         }
     }
     
@@ -92,78 +86,47 @@ class ViewController: UIViewController {
         if canAddOperator {
             textView.text.append(" / ")
         } else {
-            let alertVC = UIAlertController(title: "Erreur", message: "Un opérateur est déjà mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Un opérateur est déjà mis !")
         }
     }
     
     
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard expressionIsCorrect else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Entrez une expression correcte !")
+            return
             
         }
         
         guard expressionHaveEnoughElement else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
+            presentAlert(message: "Démarrez un nouveau calcul !")
+            return
             
         }
         
-        let result = calculator.calculate()
+        let result = calculator.calculate(elements: elements)
         
         // Create local copy of operations
         var operationsToReduce = elements
         
-        // Iterate over operations while an operand still here
-        while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
-            
-            let result: Int
-            switch operand {
-            case "+":
-                result = left + right
-            case "-":
-                result = left - right
-            case "*":
-                result = left * right
-            case "/":
-                result = left / right
-            default:
-                fatalError("Unknown operator !")
-            }
-            
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
+        if result == "Erreur : Division par zéro" {
+            presentAlert(message: result)
+        } else {
+            textView.text.append(" = \(result)")
         }
-        
-        if !isExpressionValid(textView.text) {
-            // Affichez une alerte ou un message d'erreur à l'utilisateur
-            presentAlert(message: "L'expression n'est pas valide.")
-            return
-        }
-        
-        textView.text.append(" = \(operationsToReduce.first!)")
-        calculator.clear()
     }
     
-    func isExpressionValid(_ expression: String) -> Bool {
-        // Vérifiez que l'expression ne se termine pas par un opérateur
-        let operators = ["+", "-", "*", "/"]
-        if let lastCharacter = expression.last, operators.contains(String(lastCharacter)) {
-            return false
-        }
-        
-        // Ajoutez d'autres vérifications selon les besoins, par exemple pour les opérateurs consécutifs
-        
-        return true
-    }
+    //    func isExpressionValid(_ expression: String) -> Bool {
+    //        // Vérifiez que l'expression ne se termine pas par un opérateur
+    //        let operators = ["+", "-", "*", "/"]
+    //        if let lastCharacter = expression.last, operators.contains(String(lastCharacter)) {
+    //            return false
+    //        }
+    //        
+    //        // Ajoutez d'autres vérifications selon les besoins, par exemple pour les opérateurs consécutifs
+    //        
+    //        return true
+    //    }
     
     func presentAlert(message: String) {
         let alertVC = UIAlertController(title: "Erreur", message: message, preferredStyle: .alert)
@@ -172,6 +135,6 @@ class ViewController: UIViewController {
     }
     
     
-
+    
 }
 
