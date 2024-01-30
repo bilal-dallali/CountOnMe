@@ -58,4 +58,5 @@ class Calculator {
     func clear() {
         elements = []
     }
+    
 }

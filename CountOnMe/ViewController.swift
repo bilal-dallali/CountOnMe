@@ -89,8 +89,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        calculator.appendOperand(.divide)
-        textView.text = calculator.text
         if canAddOperator {
             textView.text.append(" / ")
         } else {
