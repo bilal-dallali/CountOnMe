@@ -103,16 +103,18 @@ class ViewController: UIViewController {
         guard expressionIsCorrect else {
             let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                        return self.present(alertVC, animated: true, completion: nil)
-
+            return self.present(alertVC, animated: true, completion: nil)
+            
         }
         
         guard expressionHaveEnoughElement else {
             let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             return self.present(alertVC, animated: true, completion: nil)
-          
+            
         }
+        
+        let result = calculator.calculate()
         
         // Create local copy of operations
         var operationsToReduce = elements
@@ -125,11 +127,16 @@ class ViewController: UIViewController {
             
             let result: Int
             switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            case "*": result = left * right
-            case "/": result = left / right
-            default: fatalError("Unknown operator !")
+            case "+":
+                result = left + right
+            case "-":
+                result = left - right
+            case "*":
+                result = left * right
+            case "/":
+                result = left / right
+            default:
+                fatalError("Unknown operator !")
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
@@ -163,5 +170,8 @@ class ViewController: UIViewController {
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
+    
+    
+
 }
 
