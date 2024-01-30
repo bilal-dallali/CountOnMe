@@ -48,23 +48,14 @@ class ViewController: UIViewController {
             return
         }
         
-//        if canAddOperator {
-//            textView.text.append("\(numberText)")
-//        } else {
-//            textView.text.append(numberText)
-//        }
-        
         if expressionHaveResult {
             // Si le résultat est affiché, commencez une nouvelle expression
             textView.text = ""
             calculator.clear()
         }
-            // Sinon, ajoutez le chiffre à l'expression existante
-            textView.text.append(numberText)
-        
-        calculator.appendElement(numberText)
-        
-        textView.text = calculator.text
+        // Sinon, ajoutez le chiffre à l'expression existante
+        textView.text.append(numberText)
+
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
