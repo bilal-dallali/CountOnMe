@@ -9,10 +9,21 @@
 import Foundation
 
 class Calculator {
-    enum CalculatorError: CustomNSError {
+    enum CalculatorError: CustomNSError, LocalizedError {
         case invalidExpression
         case zeroDivision
         case unavailableResult
+        
+        var errorDescription: String? {
+            switch self {
+            case .invalidExpression:
+                return "Erreur : Expression invalide"
+            case .zeroDivision:
+                return "Erreur : Division par zéro"
+            case .unavailableResult:
+                return "Erreur : Résultat invalide"
+            }
+        }
     }
     
     func calculate(elements: [String]) throws -> String {
