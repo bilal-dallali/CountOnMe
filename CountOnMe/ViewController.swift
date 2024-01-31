@@ -104,16 +104,19 @@ class ViewController: UIViewController {
             
         }
         
-        let result = calculator.calculate(elements: elements)
-        
-        // Create local copy of operations
-        var operationsToReduce = elements
-        
-        if result == "Erreur : Division par zéro" {
-            presentAlert(message: result)
-        } else {
+        do {
+            let result = try calculator.calculate(elements: elements)
             textView.text.append(" = \(result)")
+        } catch {
+            presentAlert(message: error.localizedDescription)
         }
+        
+        
+//        if result == "Erreur : Division par zéro" {
+//            presentAlert(message: result)
+//        } else {
+//            textView.text.append(" = \(result)")
+//        }
     }
     
     //    func isExpressionValid(_ expression: String) -> Bool {
