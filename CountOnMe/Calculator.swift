@@ -95,29 +95,18 @@ class Calculator {
     }
     
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-"
+        //return elements.last != "+" && elements.last != "-"
+        guard let lastElement = elements.last else { return true }
+                return !isOperator(lastElement)
     }
+    
+    private func isOperator(_ element: String) -> Bool {
+            return ["+", "-", "*", "/"].contains(element)
+        }
     
     var expressionHaveResult: Bool {
         return elements.contains(Operand.equal.rawValue)
     }
-    
-    
-    //    func appendElement(_ value: String) {
-    //        if expressionHaveResult {
-    //            elements = [value]
-    //        } else if let last = elements.last, Operand(rawValue: last) == nil {
-    //            elements[elements.count - 1] = "\(last)\(value)"
-    //        } else {
-    //            elements.append(value)
-    //        }
-    //    }
-    
-    //    func appendOperand(_ operand: Operand) {
-    //        if canAddOperator {
-    //            appendElement(operand.rawValue)
-    //        }
-    //    }
     
     func clear() {
         elements = []

@@ -17,23 +17,6 @@ class ViewController: UIViewController {
         return textView.text.split(separator: " ").map { "\($0)" }
     }
     
-    // Error check computed variables
-    var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-"
-    }
-    
-    var expressionHaveEnoughElement: Bool {
-        return elements.count >= 3
-    }
-    
-    var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-"
-    }
-    
-    var expressionHaveResult: Bool {
-        return textView.text.firstIndex(of: "=") != nil
-    }
-    
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +24,13 @@ class ViewController: UIViewController {
         textView.text = ""
     }
     
-    
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
         
-        if expressionHaveResult {
+        if calculator.expressionHaveResult {
             // Si le résultat est affiché, commencez une nouvelle expression
             textView.text = ""
             calculator.clear()
@@ -59,7 +41,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if canAddOperator {
+        if calculator.canAddOperator {
             textView.text.append(" + ")
         } else {
             presentAlert(message: "Un opérateur est déjà mis !")
@@ -67,7 +49,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        if canAddOperator {
+        if calculator.canAddOperator {
             textView.text.append(" - ")
         } else {
             presentAlert(message: "Un opérateur est déjà mis !")
@@ -75,7 +57,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        if canAddOperator {
+        if calculator.canAddOperator {
             textView.text.append(" * ")
         } else {
             presentAlert(message: "Un opérateur est déjà mis !")
@@ -83,7 +65,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        if canAddOperator {
+        if calculator.canAddOperator {
             textView.text.append(" / ")
         } else {
             presentAlert(message: "Un opérateur est déjà mis !")
@@ -92,13 +74,12 @@ class ViewController: UIViewController {
     
     
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard expressionIsCorrect else {
+        if !calculator.expressionIsCorrect {
             presentAlert(message: "Entrez une expression correcte !")
             return
-            
         }
         
-        guard expressionHaveEnoughElement else {
+        if calculator.expressionHaveEnoughElement {
             presentAlert(message: "Démarrez un nouveau calcul !")
             return
             
@@ -111,25 +92,7 @@ class ViewController: UIViewController {
             presentAlert(message: error.localizedDescription)
         }
         
-        
-//        if result == "Erreur : Division par zéro" {
-//            presentAlert(message: result)
-//        } else {
-//            textView.text.append(" = \(result)")
-//        }
     }
-    
-    //    func isExpressionValid(_ expression: String) -> Bool {
-    //        // Vérifiez que l'expression ne se termine pas par un opérateur
-    //        let operators = ["+", "-", "*", "/"]
-    //        if let lastCharacter = expression.last, operators.contains(String(lastCharacter)) {
-    //            return false
-    //        }
-    //        
-    //        // Ajoutez d'autres vérifications selon les besoins, par exemple pour les opérateurs consécutifs
-    //        
-    //        return true
-    //    }
     
     func presentAlert(message: String) {
         let alertVC = UIAlertController(title: "Erreur", message: message, preferredStyle: .alert)
@@ -137,7 +100,4 @@ class ViewController: UIViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
     
-    
-    
 }
-
