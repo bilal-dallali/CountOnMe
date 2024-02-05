@@ -13,6 +13,7 @@ class Calculator {
         case invalidExpression
         case zeroDivision
         case unavailableResult
+        case cannotAddOperator
         
         var errorDescription: String? {
             switch self {
@@ -22,11 +23,13 @@ class Calculator {
                 return "Erreur : Division par zéro"
             case .unavailableResult:
                 return "Erreur : Résultat invalide"
+            case .cannotAddOperator:
+                return "Erreur : un opérateur est déjà mit"
             }
         }
     }
     
-    func calculate(elements: [String]) throws -> String {
+    func calculate() throws -> String {
         var operationsToReduce = elements
         
         // Traitez d'abord les multiplications et divisions
@@ -79,6 +82,36 @@ class Calculator {
         case multiply = "*"
         case divide = "/"
         case equal = "="
+    }
+    
+    func appendElement(_ value: String) -> String {
+        if expressionHaveResult {
+            // Si le résultat est affiché, commencez une nouvelle expression
+            clear()
+        }
+        
+        if let lastValue = elements.last {
+            if let operand =
+                Operand(rawValue: lastValue),
+               Operand.allCases.contains(operand) {
+                elements.append(value)
+            } else {
+                elements.removeLast()
+                elements.append(lastValue.appending(value))
+            }
+        } else {
+            elements.append(value)
+        }
+        return text
+    }
+    
+    func addOperand(_ operand: Operand) throws -> String {
+        if canAddOperator {
+            elements.append(operand.rawValue)
+            return text
+        } else {
+            throw CalculatorError.cannotAddOperator
+        }
     }
     
     private var elements: [String] = []

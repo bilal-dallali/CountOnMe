@@ -7,9 +7,19 @@
 //
 
 import XCTest
-@testable import SimpleCalc
+@testable import CountOnMe
 
 class SimpleCalcTests: XCTestCase {
+    
+    func testSuccessfulAddition() throws {
+        let baseNumber = 4
+        let calculator = Calculator()
+        calculator.appendElement("4")
+        try calculator.addOperand(.plus)
+        calculator.appendElement("8")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "12")
+    }
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

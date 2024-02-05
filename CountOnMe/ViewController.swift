@@ -13,15 +13,15 @@ class ViewController: UIViewController {
     @IBOutlet var numberButtons: [UIButton]!
     let calculator = Calculator()
     
-    var elements: [String] {
-        return textView.text.split(separator: " ").map { "\($0)" }
-    }
+//    var elements: [String] {
+//        return textView.text.split(separator: " ").map { "\($0)" }
+//    }
     
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        textView.text = ""
+        calculator.clear()
     }
     
     // View actions
@@ -30,45 +30,63 @@ class ViewController: UIViewController {
             return
         }
         
-        if calculator.expressionHaveResult {
-            // Si le résultat est affiché, commencez une nouvelle expression
-            textView.text = ""
-            calculator.clear()
-        }
+       
         // Sinon, ajoutez le chiffre à l'expression existante
-        textView.text.append(numberText)
+//        appendElement(numberText)
+//        textView.text.append(numberText)
+        textView.text = calculator.appendElement(numberText)
         
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            textView.text.append(" + ")
-        } else {
-            presentAlert(message: "Un opérateur est déjà mis !")
+//        if calculator.canAddOperator {
+//            textView.text.append(" + ")
+//        } else {
+//            presentAlert(message: "Un opérateur est déjà mis !")
+//        }
+        do {
+            textView.text = try calculator.addOperand(.plus)
+        } catch {
+            presentAlert(message: error.localizedDescription)
         }
     }
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            textView.text.append(" - ")
-        } else {
-            presentAlert(message: "Un opérateur est déjà mis !")
+//        if calculator.canAddOperator {
+//            textView.text.append(" - ")
+//        } else {
+//            presentAlert(message: "Un opérateur est déjà mis !")
+//        }
+        do {
+            textView.text = try calculator.addOperand(.minus)
+        } catch {
+            presentAlert(message: error.localizedDescription)
         }
     }
     
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            textView.text.append(" * ")
-        } else {
-            presentAlert(message: "Un opérateur est déjà mis !")
+//        if calculator.canAddOperator {
+//            textView.text.append(" * ")
+//        } else {
+//            presentAlert(message: "Un opérateur est déjà mis !")
+//        }
+        do {
+            textView.text = try calculator.addOperand(.multiply)
+        } catch {
+            presentAlert(message: error.localizedDescription)
         }
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        if calculator.canAddOperator {
-            textView.text.append(" / ")
-        } else {
-            presentAlert(message: "Un opérateur est déjà mis !")
+//        if calculator.canAddOperator {
+//            textView.text.append(" / ")
+//        } else {
+//            presentAlert(message: "Un opérateur est déjà mis !")
+//        }
+        do {
+            textView.text = try calculator.addOperand(.divide)
+        } catch {
+            presentAlert(message: error.localizedDescription)
         }
     }
     
@@ -79,19 +97,23 @@ class ViewController: UIViewController {
             return
         }
         
-        if calculator.expressionHaveEnoughElement {
+        if !calculator.expressionHaveEnoughElement {
             presentAlert(message: "Démarrez un nouveau calcul !")
             return
-            
         }
         
         do {
-            let result = try calculator.calculate(elements: elements)
+            let result = try calculator.calculate()
             textView.text.append(" = \(result)")
         } catch {
             presentAlert(message: error.localizedDescription)
         }
         
+    }
+    
+    @IBAction func tappedResetButton(_ sender: Any) {
+        calculator.clear()
+        textView.text = calculator.text
     }
     
     func presentAlert(message: String) {
