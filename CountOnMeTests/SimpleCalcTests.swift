@@ -45,10 +45,12 @@ class SimpleCalcTests: XCTestCase {
         //let baseNumber = 4
         let calculator = Calculator()
         calculator.appendElement("100")
-        try calculator.addOperand(.plus)
+        try calculator.addOperand(.divide)
         calculator.appendElement("4")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "25")
     }
+    
+    
 
 }

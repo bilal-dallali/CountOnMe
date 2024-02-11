@@ -13,10 +13,6 @@ class ViewController: UIViewController {
     @IBOutlet var numberButtons: [UIButton]!
     let calculator = Calculator()
     
-//    var elements: [String] {
-//        return textView.text.split(separator: " ").map { "\($0)" }
-//    }
-    
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,21 +25,10 @@ class ViewController: UIViewController {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
-        
-       
-        // Sinon, ajoutez le chiffre à l'expression existante
-//        appendElement(numberText)
-//        textView.text.append(numberText)
         textView.text = calculator.appendElement(numberText)
-        
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-//        if calculator.canAddOperator {
-//            textView.text.append(" + ")
-//        } else {
-//            presentAlert(message: "Un opérateur est déjà mis !")
-//        }
         do {
             textView.text = try calculator.addOperand(.plus)
         } catch {
@@ -52,11 +37,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-//        if calculator.canAddOperator {
-//            textView.text.append(" - ")
-//        } else {
-//            presentAlert(message: "Un opérateur est déjà mis !")
-//        }
         do {
             textView.text = try calculator.addOperand(.minus)
         } catch {
@@ -65,11 +45,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-//        if calculator.canAddOperator {
-//            textView.text.append(" * ")
-//        } else {
-//            presentAlert(message: "Un opérateur est déjà mis !")
-//        }
         do {
             textView.text = try calculator.addOperand(.multiply)
         } catch {
@@ -78,11 +53,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-//        if calculator.canAddOperator {
-//            textView.text.append(" / ")
-//        } else {
-//            presentAlert(message: "Un opérateur est déjà mis !")
-//        }
         do {
             textView.text = try calculator.addOperand(.divide)
         } catch {
@@ -108,7 +78,6 @@ class ViewController: UIViewController {
         } catch {
             presentAlert(message: error.localizedDescription)
         }
-        
     }
     
     @IBAction func tappedResetButton(_ sender: Any) {

@@ -42,7 +42,6 @@ class Calculator {
             }
             
             if operationsToReduce[index] == "/" && right == 0 {
-//                return "Erreur : Division par zéro"
                 throw CalculatorError.zeroDivision
             }
             
