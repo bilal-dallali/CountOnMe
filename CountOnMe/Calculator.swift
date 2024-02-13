@@ -83,7 +83,7 @@ class Calculator {
         case equal = "="
     }
     
-    func appendElement(_ value: String) -> String {
+    @discardableResult func appendElement(_ value: String) -> String {
         if expressionHaveResult {
             // Si le résultat est affiché, commencez une nouvelle expression
             clear()
@@ -104,7 +104,7 @@ class Calculator {
         return text
     }
     
-    func addOperand(_ operand: Operand) throws -> String {
+    @discardableResult func addOperand(_ operand: Operand) throws -> String {
         if canAddOperator {
             elements.append(operand.rawValue)
             return text
