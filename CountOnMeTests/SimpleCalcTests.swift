@@ -51,6 +51,65 @@ class SimpleCalcTests: XCTestCase {
         XCTAssertEqual(result, "25")
     }
     
+    func testAdditionBeforeMultiplication() throws {
+        let calculator = Calculator()
+        calculator.appendElement("2")
+        calculator.appendElement("+")
+        calculator.appendElement("3")
+        calculator.appendElement("*")
+        calculator.appendElement("4")
+        let expectedResult = "14"
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, expectedResult)
+    }
     
-
+    func testSubstractionBeforeMultiplication() throws {
+        let calculator = Calculator()
+        calculator.appendElement("10")
+        calculator.appendElement("-")
+        calculator.appendElement("2")
+        calculator.appendElement("*")
+        calculator.appendElement("3")
+        let expectedResult = "4"
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, expectedResult)
+    }
+    
+    func testSubstractionBeforeDivision() throws {
+        let calculator = Calculator()
+        calculator.appendElement("30")
+        calculator.appendElement("-")
+        calculator.appendElement("20")
+        calculator.appendElement("/")
+        calculator.appendElement("5")
+        let expectedResult = "26"
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, expectedResult)
+    }
+    
+    func testAdditionBeforeDivision() throws {
+        let calculator = Calculator()
+        calculator.appendElement("10")
+        calculator.appendElement("+")
+        calculator.appendElement("20")
+        calculator.appendElement("/")
+        calculator.appendElement("5")
+        let expectedResult = "14"
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, expectedResult)
+    }
+    
+    func testDivisionByZero() {
+        let calculator = Calculator()
+        
+        calculator.appendElement("10")
+        calculator.appendElement("/")
+        calculator.appendElement("0")
+        
+        XCTAssertThrowsError(try calculator.calculate()) { error in
+            XCTAssertEqual(error as? Calculator.CalculatorError, .zeroDivision, "Une division par zéro devrait lever une erreur .zeroDivision")
+        }
+    }
+    
+    
 }
