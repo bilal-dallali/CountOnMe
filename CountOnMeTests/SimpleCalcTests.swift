@@ -127,10 +127,27 @@ class SimpleCalcTests: XCTestCase {
         //try calculator.addOperand(.multiply)
         
         XCTAssertThrowsError(try calculator.addOperand(.multiply)) { error in
-            XCTAssertEqual(error as? Calculator.CalculatorError, .cannotAddOperator, "Rajouter deux opérateur à la suite va générer une erreur")
+            XCTAssertEqual(error as? Calculator.CalculatorError, .cannotAddOperator, "Adding two operators should generate an error")
         }
     }
     
+    func testUnavalaibleResult() throws {
+        let calculator = Calculator()
+        XCTAssertThrowsError(try calculator.calculate()) { error in
+            XCTAssertEqual(error as? Calculator.CalculatorError, .unavailableResult, "An empty expression or indeterminate form should generate an unavailableResult error.")
+        }
+    }
+    
+    func testInvalidExpression() throws {
+        let calculator = Calculator()
+        calculator.appendElement("4")
+        try calculator.addOperand(.plus)
+        
+        XCTAssertThrowsError(try calculator.calculate()) { error in
+            XCTAssertEqual(error as? Calculator.CalculatorError, .invalidExpression, "An expression ending with an operator should generate an invalidExpression error.")
+        }
+    }
+
     func testClear() throws {
         let calculator = Calculator()
         calculator.appendElement("4")
@@ -140,5 +157,4 @@ class SimpleCalcTests: XCTestCase {
         calculator.clear()
         XCTAssertEqual(calculator.text, "")
     }
-    
 }
