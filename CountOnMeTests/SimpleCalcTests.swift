@@ -157,4 +157,12 @@ class SimpleCalcTests: XCTestCase {
         calculator.clear()
         XCTAssertEqual(calculator.text, "")
     }
+    
+    func testAddingNegativeNumberAtStart() throws {
+        let calculator = Calculator()
+        calculator.addNumber("-5")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "-5", "Le calcul devrait pouvoir commencer par un nombre négatif.")
+    }
+
 }

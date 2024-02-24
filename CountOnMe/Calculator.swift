@@ -30,6 +30,8 @@ class Calculator {
     }
     
     func calculate() throws -> String {
+        
+        
         var operationsToReduce = elements
         
         // Traitez d'abord les multiplications et divisions
@@ -63,6 +65,7 @@ class Calculator {
         
         guard let value = operationsToReduce.first else { throw CalculatorError.unavailableResult }
         return value
+
     }
     
     // Fonction pour formater le résultat
@@ -89,10 +92,12 @@ class Calculator {
             clear()
         }
         
-        if let lastValue = elements.last {
-            if let operand =
-                Operand(rawValue: lastValue),
-               Operand.allCases.contains(operand) {
+        // Deal with a negative numner at the beginning of the expression
+        
+        if elements.isEmpty && value.starts(with: "-") {
+            elements.append(value)
+        } else if let lastValue = elements.last {
+            if let operand = Operand(rawValue: lastValue), Operand.allCases.contains(operand) {
                 elements.append(value)
             } else {
                 elements.removeLast()
@@ -101,6 +106,18 @@ class Calculator {
         } else {
             elements.append(value)
         }
+//        if let lastValue = elements.last {
+//            if let operand =
+//                Operand(rawValue: lastValue),
+//               Operand.allCases.contains(operand) {
+//                elements.append(value)
+//            } else {
+//                elements.removeLast()
+//                elements.append(lastValue.appending(value))
+//            }
+//        } else {
+//            elements.append(value)
+//        }
         return text
     }
     
@@ -119,6 +136,12 @@ class Calculator {
     }
     // Error check computed variables
     var expressionIsCorrect: Bool {
+        // Allow an expresion starting by a negative number
+        if elements.count == 1 && elements.first == "-" {
+            return true
+        }
+        
+        // Check if the last start is not an operator
         return elements.last != Operand.plus.rawValue && elements.last != Operand.minus.rawValue
     }
     
