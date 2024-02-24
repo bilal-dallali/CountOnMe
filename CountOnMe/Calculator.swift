@@ -29,18 +29,60 @@ class Calculator {
         }
     }
     
+//    func calculate() throws -> String {
+//        
+//        
+//        var operationsToReduce = elements
+//        
+//        // Traitez d'abord les multiplications et divisions
+//        while let index = operationsToReduce.firstIndex(where: { $0 == "*" || $0 == "/" }) {
+//            guard index > 0, index < operationsToReduce.count - 1,
+//                  let left = Double(operationsToReduce[index - 1]),
+//                  let right = Double(operationsToReduce[index + 1]) else {
+//                throw CalculatorError.invalidExpression
+//                //return "Erreur : Expression invalide"
+//            }
+//            
+//            if operationsToReduce[index] == "/" && right == 0 {
+//                throw CalculatorError.zeroDivision
+//            }
+//            
+//            let result = operationsToReduce[index] == "*" ? left * right : left / right
+//            operationsToReduce.replaceSubrange(index-1...index+1, with: [formatResult(result)])
+//        }
+//        
+//        // Ensuite, traitez les additions et soustractions
+//        while let index = operationsToReduce.firstIndex(where: { $0 == "+" || $0 == "-" }) {
+//            guard index > 0, index < operationsToReduce.count - 1,
+//                  let left = Double(operationsToReduce[index - 1]),
+//                  let right = Double(operationsToReduce[index + 1]) else {
+//                throw CalculatorError.invalidExpression
+//            }
+//            
+//            let result = operationsToReduce[index] == "+" ? left + right : left - right
+//            operationsToReduce.replaceSubrange(index-1...index+1, with: [formatResult(result)])
+//        }
+//        
+//        guard let value = operationsToReduce.first else { throw CalculatorError.unavailableResult }
+//        return value
+//
+//    }
+    
     func calculate() throws -> String {
-        
-        
         var operationsToReduce = elements
         
-        // Traitez d'abord les multiplications et divisions
+        // Check if the first element is a negative number and adjust accordingly
+        if operationsToReduce.first == "-", operationsToReduce.count >= 2, let number = Double(operationsToReduce[1]) {
+            operationsToReduce[1] = String(-number) // Convert the following number to negative
+            operationsToReduce.removeFirst() // Remove the initial "-"
+        }
+
+        // First, process multiplications and divisions
         while let index = operationsToReduce.firstIndex(where: { $0 == "*" || $0 == "/" }) {
             guard index > 0, index < operationsToReduce.count - 1,
                   let left = Double(operationsToReduce[index - 1]),
                   let right = Double(operationsToReduce[index + 1]) else {
                 throw CalculatorError.invalidExpression
-                //return "Erreur : Expression invalide"
             }
             
             if operationsToReduce[index] == "/" && right == 0 {
@@ -51,7 +93,7 @@ class Calculator {
             operationsToReduce.replaceSubrange(index-1...index+1, with: [formatResult(result)])
         }
         
-        // Ensuite, traitez les additions et soustractions
+        // Then, process additions and subtractions
         while let index = operationsToReduce.firstIndex(where: { $0 == "+" || $0 == "-" }) {
             guard index > 0, index < operationsToReduce.count - 1,
                   let left = Double(operationsToReduce[index - 1]),
@@ -65,12 +107,12 @@ class Calculator {
         
         guard let value = operationsToReduce.first else { throw CalculatorError.unavailableResult }
         return value
-
     }
 
-    private func isOperator(_ element: String) -> Bool {
-        return ["+", "-", "*", "/"].contains(element)
-    }
+
+//    private func isOperator(_ element: String) -> Bool {
+//        return ["+", "-", "*", "/"].contains(element)
+//    }
 
 
     

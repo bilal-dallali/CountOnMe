@@ -164,5 +164,32 @@ class SimpleCalcTests: XCTestCase {
         let result = try calculator.calculate()
         XCTAssertEqual(result, "-5", "Le calcul devrait pouvoir commencer par un nombre négatif.")
     }
+    
+    func testOperationNegativeNumberAtStart() throws {
+        let calculator = Calculator()
+        calculator.addNumber("-5")
+        try calculator.addOperand(.minus)
+        calculator.addNumber("75")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "-80")
+    }
+    
+    func testOperationNegativeNumberMultiplyAtStart() throws {
+        let calculator = Calculator()
+        calculator.addNumber("-5")
+        try calculator.addOperand(.multiply)
+        calculator.addNumber("8")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "-40")
+    }
+    
+    func testOperationNegativeNumberDivideAtStart() throws {
+        let calculator = Calculator()
+        calculator.addNumber("-40")
+        try calculator.addOperand(.divide)
+        calculator.addNumber("8")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "-5")
+    }
 
 }
