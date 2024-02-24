@@ -67,6 +67,12 @@ class Calculator {
         return value
 
     }
+
+    private func isOperator(_ element: String) -> Bool {
+        return ["+", "-", "*", "/"].contains(element)
+    }
+
+
     
     // Fonction pour formater le résultat
     func formatResult(_ result: Double) -> String {
@@ -136,13 +142,13 @@ class Calculator {
     }
     // Error check computed variables
     var expressionIsCorrect: Bool {
-        // Allow an expresion starting by a negative number
-        if elements.count == 1 && elements.first == "-" {
+        // Allow an expression starting with a negative number followed by an operator
+        if elements.count >= 2 && elements.first == "-" && isOperator(elements[1]) {
             return true
         }
         
-        // Check if the last start is not an operator
-        return elements.last != Operand.plus.rawValue && elements.last != Operand.minus.rawValue
+        // Check if the last element is not an operator
+        return !isOperator(elements.last ?? "")
     }
     
     var expressionHaveEnoughElement: Bool {
@@ -152,12 +158,12 @@ class Calculator {
     var canAddOperator: Bool {
         //return elements.last != "+" && elements.last != "-"
         guard let lastElement = elements.last else { return true }
-                return !isOperator(lastElement)
+        return !isOperator(lastElement)
     }
     
     private func isOperator(_ element: String) -> Bool {
-            return ["+", "-", "*", "/"].contains(element)
-        }
+        return ["+", "-", "*", "/"].contains(element)
+    }
     
     var expressionHaveResult: Bool {
         return elements.contains(Operand.equal.rawValue)
