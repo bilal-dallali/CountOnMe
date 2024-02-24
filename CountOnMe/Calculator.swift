@@ -83,7 +83,7 @@ class Calculator {
         case equal = "="
     }
     
-    @discardableResult func appendElement(_ value: String) -> String {
+    @discardableResult func addNumber(_ value: String) -> String {
         if expressionHaveResult {
             // Si le résultat est affiché, commencez une nouvelle expression
             clear()

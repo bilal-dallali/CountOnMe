@@ -13,9 +13,9 @@ class SimpleCalcTests: XCTestCase {
     
     func testSuccessfulAddition() throws {
         let calculator = Calculator()
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         try calculator.addOperand(.plus)
-        calculator.appendElement("8")
+        calculator.addNumber("8")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "12")
     }
@@ -23,9 +23,9 @@ class SimpleCalcTests: XCTestCase {
     func testSuccessfulSubstraction() throws {
         //let baseNumber = 4
         let calculator = Calculator()
-        calculator.appendElement("16")
+        calculator.addNumber("16")
         try calculator.addOperand(.minus)
-        calculator.appendElement("6")
+        calculator.addNumber("6")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "10")
     }
@@ -33,9 +33,9 @@ class SimpleCalcTests: XCTestCase {
     func testSuccessfulNegativeResultSubstraction() throws {
         //let baseNumber = 4
         let calculator = Calculator()
-        calculator.appendElement("16")
+        calculator.addNumber("16")
         try calculator.addOperand(.minus)
-        calculator.appendElement("20")
+        calculator.addNumber("20")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "-4")
     }
@@ -43,9 +43,9 @@ class SimpleCalcTests: XCTestCase {
     func testSuccessfulMultiplication() throws {
         //let baseNumber = 4
         let calculator = Calculator()
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         try calculator.addOperand(.multiply)
-        calculator.appendElement("8")
+        calculator.addNumber("8")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "32")
     }
@@ -53,20 +53,20 @@ class SimpleCalcTests: XCTestCase {
     func testSuccessfulDivision() throws {
         //let baseNumber = 4
         let calculator = Calculator()
-        calculator.appendElement("100")
+        calculator.addNumber("100")
         try calculator.addOperand(.divide)
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         let result = try calculator.calculate()
         XCTAssertEqual(result, "25")
     }
     
     func testAdditionBeforeMultiplication() throws {
         let calculator = Calculator()
-        calculator.appendElement("2")
+        calculator.addNumber("2")
         try calculator.addOperand(.plus)
-        calculator.appendElement("3")
+        calculator.addNumber("3")
         try calculator.addOperand(.multiply)
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         let expectedResult = "14"
         let result = try calculator.calculate()
         XCTAssertEqual(result, expectedResult)
@@ -74,11 +74,11 @@ class SimpleCalcTests: XCTestCase {
     
     func testSubstractionBeforeMultiplication() throws {
         let calculator = Calculator()
-        calculator.appendElement("10")
+        calculator.addNumber("10")
         try calculator.addOperand(.minus)
-        calculator.appendElement("2")
+        calculator.addNumber("2")
         try calculator.addOperand(.multiply)
-        calculator.appendElement("3")
+        calculator.addNumber("3")
         let expectedResult = "4"
         let result = try calculator.calculate()
         XCTAssertEqual(result, expectedResult)
@@ -86,11 +86,11 @@ class SimpleCalcTests: XCTestCase {
     
     func testSubstractionBeforeDivision() throws {
         let calculator = Calculator()
-        calculator.appendElement("30")
+        calculator.addNumber("30")
         try calculator.addOperand(.minus)
-        calculator.appendElement("20")
+        calculator.addNumber("20")
         try calculator.addOperand(.divide)
-        calculator.appendElement("5")
+        calculator.addNumber("5")
         let expectedResult = "26"
         let result = try calculator.calculate()
         XCTAssertEqual(result, expectedResult)
@@ -98,11 +98,11 @@ class SimpleCalcTests: XCTestCase {
     
     func testAdditionBeforeDivision() throws {
         let calculator = Calculator()
-        calculator.appendElement("10")
+        calculator.addNumber("10")
         try calculator.addOperand(.plus)
-        calculator.appendElement("20")
+        calculator.addNumber("20")
         try calculator.addOperand(.divide)
-        calculator.appendElement("5")
+        calculator.addNumber("5")
         let expectedResult = "14"
         let result = try calculator.calculate()
         XCTAssertEqual(result, expectedResult)
@@ -111,9 +111,9 @@ class SimpleCalcTests: XCTestCase {
     func testDivisionByZero() throws {
         let calculator = Calculator()
         
-        calculator.appendElement("10")
+        calculator.addNumber("10")
         try calculator.addOperand(.divide)
-        calculator.appendElement("0")
+        calculator.addNumber("0")
         
         XCTAssertThrowsError(try calculator.calculate()) { error in
             XCTAssertEqual(error as? Calculator.CalculatorError, .zeroDivision, "Une division par zéro devrait lever une erreur .zeroDivision")
@@ -122,7 +122,7 @@ class SimpleCalcTests: XCTestCase {
     
     func testCannotAddOperator() throws {
         let calculator = Calculator()
-        calculator.appendElement("10")
+        calculator.addNumber("10")
         try calculator.addOperand(.plus)
         //try calculator.addOperand(.multiply)
         
@@ -140,7 +140,7 @@ class SimpleCalcTests: XCTestCase {
     
     func testInvalidExpression() throws {
         let calculator = Calculator()
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         try calculator.addOperand(.plus)
         
         XCTAssertThrowsError(try calculator.calculate()) { error in
@@ -150,9 +150,9 @@ class SimpleCalcTests: XCTestCase {
 
     func testClear() throws {
         let calculator = Calculator()
-        calculator.appendElement("4")
+        calculator.addNumber("4")
         try calculator.addOperand(.plus)
-        calculator.appendElement("8")
+        calculator.addNumber("8")
         XCTAssertEqual(calculator.text, "4 + 8")
         calculator.clear()
         XCTAssertEqual(calculator.text, "")
