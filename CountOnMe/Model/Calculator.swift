@@ -29,45 +29,6 @@ class Calculator {
         }
     }
     
-//    func calculate() throws -> String {
-//        
-//        
-//        var operationsToReduce = elements
-//        
-//        // Traitez d'abord les multiplications et divisions
-//        while let index = operationsToReduce.firstIndex(where: { $0 == "*" || $0 == "/" }) {
-//            guard index > 0, index < operationsToReduce.count - 1,
-//                  let left = Double(operationsToReduce[index - 1]),
-//                  let right = Double(operationsToReduce[index + 1]) else {
-//                throw CalculatorError.invalidExpression
-//                //return "Erreur : Expression invalide"
-//            }
-//            
-//            if operationsToReduce[index] == "/" && right == 0 {
-//                throw CalculatorError.zeroDivision
-//            }
-//            
-//            let result = operationsToReduce[index] == "*" ? left * right : left / right
-//            operationsToReduce.replaceSubrange(index-1...index+1, with: [formatResult(result)])
-//        }
-//        
-//        // Ensuite, traitez les additions et soustractions
-//        while let index = operationsToReduce.firstIndex(where: { $0 == "+" || $0 == "-" }) {
-//            guard index > 0, index < operationsToReduce.count - 1,
-//                  let left = Double(operationsToReduce[index - 1]),
-//                  let right = Double(operationsToReduce[index + 1]) else {
-//                throw CalculatorError.invalidExpression
-//            }
-//            
-//            let result = operationsToReduce[index] == "+" ? left + right : left - right
-//            operationsToReduce.replaceSubrange(index-1...index+1, with: [formatResult(result)])
-//        }
-//        
-//        guard let value = operationsToReduce.first else { throw CalculatorError.unavailableResult }
-//        return value
-//
-//    }
-    
     func calculate() throws -> String {
         var operationsToReduce = elements
         
@@ -108,13 +69,6 @@ class Calculator {
         guard let value = operationsToReduce.first else { throw CalculatorError.unavailableResult }
         return value
     }
-
-
-//    private func isOperator(_ element: String) -> Bool {
-//        return ["+", "-", "*", "/"].contains(element)
-//    }
-
-
     
     // Fonction pour formater le résultat
     func formatResult(_ result: Double) -> String {
@@ -124,7 +78,6 @@ class Calculator {
             return String(result)  // Conservez la partie décimale si nécessaire
         }
     }
-    
     
     enum Operand: String, CaseIterable {
         case plus = "+"
@@ -154,18 +107,6 @@ class Calculator {
         } else {
             elements.append(value)
         }
-//        if let lastValue = elements.last {
-//            if let operand =
-//                Operand(rawValue: lastValue),
-//               Operand.allCases.contains(operand) {
-//                elements.append(value)
-//            } else {
-//                elements.removeLast()
-//                elements.append(lastValue.appending(value))
-//            }
-//        } else {
-//            elements.append(value)
-//        }
         return text
     }
     
