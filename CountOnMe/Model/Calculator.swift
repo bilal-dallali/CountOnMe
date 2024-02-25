@@ -9,33 +9,38 @@
 import Foundation
 
 class Calculator {
+    // Custom errors for the calculator
     enum CalculatorError: CustomNSError, LocalizedError {
         case invalidExpression
         case zeroDivision
         case unavailableResult
         case cannotAddOperator
         
+        // Provide a user-friendly error message
         var errorDescription: String? {
             switch self {
             case .invalidExpression:
-                return "Erreur : Expression invalide"
+                return "Error : Invalid expression"
             case .zeroDivision:
-                return "Erreur : Division par zéro"
+                return "Error : Division by zero"
             case .unavailableResult:
-                return "Erreur : Résultat invalide"
+                return "Error : Invalid result"
             case .cannotAddOperator:
-                return "Erreur : un opérateur est déjà mit"
+                return "Error : An operator is already set"
             }
         }
     }
     
+    // Main calculation function
     func calculate() throws -> String {
         var operationsToReduce = elements
         
-        // Check if the first element is a negative number and adjust accordingly
+        // Handle negative numbers at the beginning of the expression
         if operationsToReduce.first == "-", operationsToReduce.count >= 2, let number = Double(operationsToReduce[1]) {
-            operationsToReduce[1] = String(-number) // Convert the following number to negative
-            operationsToReduce.removeFirst() // Remove the initial "-"
+            // Convert the following number to negative
+            operationsToReduce[1] = String(-number)
+            // Remove the initial "-"
+            operationsToReduce.removeFirst()
         }
 
         // First, process multiplications and divisions
@@ -70,15 +75,18 @@ class Calculator {
         return value
     }
     
-    // Fonction pour formater le résultat
+    // Function to format the result
     func formatResult(_ result: Double) -> String {
         if result.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(format: "%.0f", result)  // Pas de partie décimale si le résultat est un entier
+            // No decimal part if the result is an integer
+            return String(format: "%.0f", result)
         } else {
-            return String(result)  // Conservez la partie décimale si nécessaire
+            // Keep the decimal part if necessary
+            return String(result)
         }
     }
     
+    // Operand
     enum Operand: String, CaseIterable {
         case plus = "+"
         case minus = "-"
@@ -87,14 +95,14 @@ class Calculator {
         case equal = "="
     }
     
+    // Add a number to the expression
     @discardableResult func addNumber(_ value: String) -> String {
         if expressionHaveResult {
-            // Si le résultat est affiché, commencez une nouvelle expression
+            // If a result is displayed start a new expression
             clear()
         }
         
-        // Deal with a negative numner at the beginning of the expression
-        
+        // Handle with a negative numner at the beginning of the expression
         if elements.isEmpty && value.starts(with: "-") {
             elements.append(value)
         } else if let lastValue = elements.last {
@@ -110,6 +118,7 @@ class Calculator {
         return text
     }
     
+    // Function to add an operand to the expression
     @discardableResult func addOperand(_ operand: Operand) throws -> String {
         if canAddOperator {
             elements.append(operand.rawValue)
@@ -119,11 +128,15 @@ class Calculator {
         }
     }
     
+    // Storage for the element of the expression
     private var elements: [String] = []
+    
+    // Computed property to get the text representation of the expression
     var text: String {
         return elements.joined(separator: " ")
     }
-    // Error check computed variables
+    
+    // Computed properties to check various conditions
     var expressionIsCorrect: Bool {
         // Allow an expression starting with a negative number followed by an operator
         if elements.count >= 2 && elements.first == "-" && isOperator(elements[1]) {
@@ -152,6 +165,7 @@ class Calculator {
         return elements.contains(Operand.equal.rawValue)
     }
     
+    // Clear the current expression
     func clear() {
         elements = []
     }

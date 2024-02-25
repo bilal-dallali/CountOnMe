@@ -191,5 +191,23 @@ class SimpleCalcTests: XCTestCase {
         let result = try calculator.calculate()
         XCTAssertEqual(result, "-5")
     }
+    
+    func testResultDivideDecimalNumber() throws {
+        let calculator = Calculator()
+        calculator.addNumber("9")
+        try calculator.addOperand(.divide)
+        calculator.addNumber("2")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "4.5")
+    }
+    
+    func testResultMultiplyDecimalNumber() throws {
+        let calculator = Calculator()
+        calculator.addNumber("4.5")
+        try calculator.addOperand(.multiply)
+        calculator.addNumber("2")
+        let result = try calculator.calculate()
+        XCTAssertEqual(result, "9")
+    }
 
 }
